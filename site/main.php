@@ -22,7 +22,6 @@
 			<pre>Number of days: {{days}}</pre>
 			<pre>Daily rate: {{dailyRate}}</pre>
 			<pre>Total: R{{Total}}</pre>
-			<br>
 			<button>Compare</button>
 		</form>
 		
