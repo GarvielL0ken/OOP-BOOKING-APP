@@ -6,7 +6,7 @@
 	</head>
 	<body>
 		<a href="./compare.html">Compare</a>
-		<form>
+		<form action="../config/submit_user_data.php" method="post">
 			<label for="first-name">First Name:</label><input type="text" id="first-name" name="firstName" required><br>
 			<label for="surname">Surname:</label><input type="text" id="surname" name="surname" required><br>
 			<label for="email">Email Address</label><input type="email" id="email" name="email" required><br>
@@ -24,6 +24,5 @@
 			<pre>Total: R{{Total}}</pre>
 			<button>Compare</button>
 		</form>
-		
 	</body>
 </html>
