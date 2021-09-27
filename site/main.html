@@ -8,21 +8,34 @@
 		<a href="./compare.html">Compare</a>
 		<div id="application">
 			<form action="../config/submit_user_data.php" method="post">
-				<label for="first-name">First Name:</label><input type="text" id="first-name" name="firstName" required><br>
-				<label for="surname">Surname:</label><input type="text" id="surname" name="surname" required><br>
-				<label for="email">Email Address</label><input type="email" id="email" name="email" required><br>
-				<label for="number">Number of Days:</label><input type="number" id="number" name="number" min="1" required><br>
-				<label for="check-in-date">Check in Date:</label><input type="date" id="check-in-date" name="checkInDate" required><br>
-				<label for="check-out-date">Check out Date:</label><input type="date" id="check-out-date" name="checkOutDate" required><br>
-				<label for="hotel">Hotel:</label><select id="hotel" name="hotel" required>
+				<label for="first-name">First Name:</label>
+				<input type="text" id="first-name" name="first_name" required><br>
+				
+				<label for="surname">Surname:</label>
+				<input type="text" id="surname" name="surname" required><br>
+				
+				<label for="email">Email Address</label>
+				<input type="email" id="email" name="email" required><br>
+				
+				<label for="number">Number of Days:</label>
+				<input type="number" id="number" name="number" min="1" v-model="numberOfDays" @keydown="updateDates(0)" required><br>
+				
+				<label for="check-in-date">Check in Date:</label>
+				<input type="date" id="check-in-date" name="check_in_date" v-model="checkInDate" @input="updateDates(0)" required><br>
+				
+				<label for="check-out-date">Check out Date:</label>
+				<input type="date" id="check-out-date" name="check_out_date" v-model="checkOutDate" @input="updateDates(1)" required><br>
+				
+				<label for="hotel">Hotel:</label>
+				<select id="hotel" name="hotel" required>
 					<option value=""></option>
 					<option value="Alpha">Alpha</option>
 					<option value="Bravo">Bravo</option>
 					<option value="Charlie">Charlie</option>
 				</select>
-				<pre>Number of days: {{days}}</pre>
-				<pre>Daily rate: {{dailyRate}}</pre>
-				<pre>Total: R{{Total}}</pre>
+				<pre>Number of days: {{numberOfDays}}</pre>
+				<pre>Daily rate: R<!--{{dailyRate}}--></pre>
+				<pre>Total: R<!--{{Total}}--></pre>
 				<button>Compare</button>
 			</form>
 		</div>
