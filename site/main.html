@@ -47,15 +47,15 @@
 						required><br>
 				
 				<label for="hotel">Hotel:</label>
-				<select id="hotel" name="hotel" required>
+				<select id="hotel" name="hotel"  v-model="hotel" @change="updateRates()" required>
 					<option value=""></option>
 					<option value="Alpha">Alpha</option>
 					<option value="Bravo">Bravo</option>
 					<option value="Charlie">Charlie</option>
 				</select>
 				<pre>Number of days: {{numberOfDays}}</pre>
-				<pre>Daily rate: R<!--{{dailyRate}}--></pre>
-				<pre>Total: R<!--{{Total}}--></pre>
+				<pre>Daily rate: R{{dailyRate}}</pre>
+				<pre>Total: R{{total}}</pre>
 				<button>Compare</button>
 			</form>
 		</div>
