@@ -6,33 +6,37 @@
 	</head>
 	<body>
 		<a href="./main.html">Main</a>
-		<form>
-			<label for="hotel">Hotel:</label>
-			<select id="hotel" name="hotel" required>
-					<option value=""></option>
-					<option value="Alpha">Alpha</option>
-					<option value="Bravo">Bravo</option>
-					<option value="Charlie">Charlie</option>
-			</select>
-			<pre>Number of days: {{days}}</pre>
-			<pre>Daily rate: {{dailyRate}}</pre>
-			<pre>Total: R{{Total}}</pre>
-			<pre>Features: {{features}}</pre>
-			<button type="button">Book</button>
-		</form>
-		<form>
-			<label for="hotel">Hotel:</label>
-			<select id="hotel" name="hotel" required>
-					<option value=""></option>
-					<option value="Alpha">Alpha</option>
-					<option value="Bravo">Bravo</option>
-					<option value="Charlie">Charlie</option>
-			</select>
-			<pre>Number of days: {{days}}</pre>
-			<pre>Daily rate: {{dailyRate}}</pre>
-			<pre>Total: R{{Total}}</pre>
-			<pre>Features: {{features}}</pre>
-			<button type="button">Book</button>
-		</form>
+		<div id="application">
+			<form>
+				<label for="hotel">Hotel:</label>
+				<select id="hotel" name="hotel" v-model="hotel1" @change="updateCurrentHotel(1)" required>
+						<option value=""></option>
+						<option value="Alpha">Alpha</option>
+						<option value="Bravo">Bravo</option>
+						<option value="Charlie">Charlie</option>
+				</select>
+				<pre>Number of days: {{interface1.numberOfDays}}</pre>
+				<pre>Daily rate: R{{interface1.dailyRate}}</pre>
+				<pre>Total: R{{interface1.total}}</pre>
+				<pre>Features: {{interface1.features}}</pre>
+				<button type="button">Book</button>
+			</form>
+			<form>
+				<label for="hotel">Hotel:</label>
+				<select id="hotel" name="hotel" v-model="hotel2" @change="updateCurrentHotel(2)" required>
+						<option value=""></option>
+						<option value="Alpha">Alpha</option>
+						<option value="Bravo">Bravo</option>
+						<option value="Charlie">Charlie</option>
+				</select>
+				<pre>Number of days: {{interface2.numberOfDays}}</pre>
+				<pre>Daily rate: R{{interface2.dailyRate}}</pre>
+				<pre>Total: R{{interface2.Total}}</pre>
+				<pre>Features: {{interface2.features}}</pre>
+				<button type="button">Book</button>
+			</form>
+		</div>
+		<script src="https://unpkg.com/vue"></script>
+		<script src="./js/compare.js"></script>
 	</body>
 </html>

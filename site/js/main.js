@@ -45,7 +45,6 @@ application = new Vue({
 			var objCheckOutDate;
 			var intTotalNumberOfDays;
 			
-			
 			if (this.checkInDate && this.checkOutDate) {
 				objCheckInDate = new Date(this.checkInDate);
 				objCheckOutDate = new Date(this.checkOutDate);
