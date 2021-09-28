@@ -1,4 +1,6 @@
-application = new Vue({
+import {HotelInterface} from './HotelInterface.js';
+
+var application = new Vue({
 	el : "#application",
 	data : {
 		hotel1 : "",
@@ -13,20 +15,16 @@ application = new Vue({
 			{title : "Charlie",
 				dailyRate : 50,
 				features : "dolar"}],
-		interface1 : {
-			numberOfDays : 2
-		},
-		interface2 : {
-			numberOfDays : 2
-		}
+		interface1 : new HotelInterface(),
+		interface2 : new HotelInterface()
 	},
 	methods : {
 		updateCurrentHotel(interfaceIndex) {
 			console.log("Update Current Hotel: " + interfaceIndex);
 			if (interfaceIndex === 1)
-				this.interface1.setHotel(this.hotel1);
+				this.interface1.setHotel(this.hotel1, this.hotels);
 			else
-				this.interface2.setHotel(this.hotel2);
+				this.interface2.setHotel(this.hotel2, this.hotels);
 		}
 	}
 })
