@@ -53,21 +53,16 @@ export class XHRHandler {
 		
 		var		xhrHandler = this;
 		
-		console.log("Method: " + requestData.method);
-		console.log("Path: " + requestData.path);
-		//xhr.addEventListener("load", this.requestResponseText);
-		
 		xhr.open(requestData.method, requestData.path, false);
 		
-		// Track the state changes of the request.
 		xhr.onreadystatechange = function () {
-			let done = 4; // readyState 4 means the request is done.
-			let ok = 200; // status 200 is a successful return.
+			let done = 4;
+			let ok = 200;
 			if (xhr.readyState === done) {
 				if (xhr.status === ok) {
 					xhrHandler.setResponseText(this.responseText);
 				} else {
-					console.log('Error: ' + xhr.status); // An error occurred during the request.
+					console.log('Error: ' + xhr.status);
 				}
 			}
 		};
