@@ -1,5 +1,6 @@
 export class HotelInterface {
-	constructor() {
+	constructor(numberOfDays) {
+		this.numberOfDays = numberOfDays;
 		this.hotel = null;
 	}
 
@@ -17,6 +18,13 @@ export class HotelInterface {
 			return("");
 	}
 
+	getTotal() {
+		if (this.hotel)
+			return (this.numberOfDays * this.hotel.dailyRate);
+		else
+			return (0);
+	}
+
 	setHotel(hotelTitle, hotels) {
 		var	i;
 
@@ -24,6 +32,7 @@ export class HotelInterface {
 		while (hotels[i]) {
 			if (hotels[i].title === hotelTitle) {
 				this.hotel = hotels[i];
+				break ;
 			}
 			i++;
 		}
