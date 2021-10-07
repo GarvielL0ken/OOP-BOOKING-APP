@@ -35,7 +35,8 @@
 						v-model="checkInDate"
 						@keyup="updateDates(0)"
 						@change="updateDates(0)"
-						required><br>
+						required>
+				<br>
 				
 				<label for="check-out-date">Check out Date:</label>
 				<input id="check-out-date"
@@ -44,7 +45,8 @@
 						v-model="checkOutDate"
 						@keyup="updateDates(1)"
 						@change="updateDates(1)"
-						required><br>
+						required>
+				<br>
 				
 				<label for="hotel">Hotel:</label>
 				<select id="hotel" name="hotel" v-model="hotel" @change="updateRates()" required>
