@@ -1,4 +1,9 @@
-application = new Vue({
+import { Hotel } from './Hotel.js';
+import { HotelInterface } from './HotelInterface.js';
+import { XHRHandler } from './XHRHandler.js';
+import { XHRRequestData } from './XHRRequestData.js';
+
+var application = new Vue({
 	el : "#application",
 	data : {
 		checkInDate : "",
@@ -7,19 +12,48 @@ application = new Vue({
 		hotel : "",
 		dailyRate : 0,
 		total : 0,
-		hotels : [{title : "Alpha",
-					dailyRate : 100},
-				{title : "Bravo",
-					dailyRate : 200},
-				{title : "Charlie",
-					dailyRate : 50}]
+		hotels : [
+			{title : "Alpha",
+				dailyRate : 100},
+			{title : "Bravo",
+				dailyRate : 200},
+			{title : "Charlie",
+				dailyRate : 50}
+			],
+		interface : new HotelInterface(1),
+		xhrHandler : new XHRHandler()
 	},
 	methods : {
+		addNewXHRRequestData(name, method, path) {
+			var xhrRequestData;
+
+			xhrRequestData = new XHRRequestData(name, method, path);
+			this.xhrHandler.addNewXHRRequestData(xhrRequestData);
+		},
+		getAllHotels() {
+			var	response;
+
+			response = JSON.parse(this.sendRequest("get_all_hotels"));
+			response.forEach(function(item) {
+				application.hotels.push(new Hotel(item.title, item.daily_rate));
+			})
+		},
+		sendRequest(requestName= "") {
+			var response;
+
+			response = "";
+			if (requestName)
+				response = this.xhrHandler.requestN(requestName);
+			else
+				response = this.xhrHandler.requestC();
+			return (response);
+		},
 		/*
 			Changes either the checkOutDate or numberOfDays depending on
 			which field the user changed.
 		*/
 		updateDates(state) {
+			this.interface.setNumberOfDays(this.numberOfDays);
 			if (state === 0)
 				this.updateCheckOutDate();
 			if (state === 1)
@@ -44,6 +78,7 @@ application = new Vue({
 			var objCheckInDate;
 			var objCheckOutDate;
 			var intTotalNumberOfDays;
+			var milliseconds;
 			
 			if (this.checkInDate && this.checkOutDate) {
 				objCheckInDate = new Date(this.checkInDate);
@@ -57,29 +92,23 @@ application = new Vue({
 					this.numberOfDays = 1;
 					this.updateCheckOutDate();
 				}
+				this.interface.setNumberOfDays(this.numberOfDays);
 			}
 		},
 		updateRates() {
 			var	currentHotel;
 			var	i;
 
-			i = 0;
-			while (this.hotels[i]) {
-				currentHotel = this.hotels[i];
-				if (currentHotel.title === this.hotel)
-					break ;
-				i++;
-			}
-			if ((this.hotels[i]) && (0 < this.numberOfDays)) {
-				this.dailyRate = currentHotel.dailyRate;
-				this.total = this.dailyRate * this.numberOfDays;
+			if (this.interface.setHotel(this.hotel, this.hotels) && (0 < this.numberOfDays)) {
+				this.dailyRate = this.interface.getDailyRate();
+				this.total = this.interface.getTotal();
 			} else {
 				this.dailyRate = 0;
 				this.total = 0;
 			}
-		},
-		log() {
-			console.log("test");
 		}
 	}
-})	
+})
+
+application.addNewXHRRequestData("get_all_hotels", "GET", '../config/get_all_hotels.php');
+application.getAllHotels();

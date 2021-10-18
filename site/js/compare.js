@@ -25,7 +25,6 @@ var application = new Vue({
 	},
 	methods : {
 		updateCurrentHotel(interfaceIndex) {
-			console.log("Update Current Hotel: " + interfaceIndex);
 			if (interfaceIndex === 1)
 				this.interface1.setHotel(this.hotel1, this.hotels);
 			else
@@ -35,15 +34,12 @@ var application = new Vue({
 			var xhrRequestData;
 
 			xhrRequestData = new XHRRequestData(name, method, path);
-			console.log(xhrRequestData);
 			this.xhrHandler.addNewXHRRequestData(xhrRequestData);
-			console.log(this.xhrHandler);
 		},
 		getHotelFromSession() {
 			var	hotelName;
 
 			hotelName = JSON.parse(this.xhrHandler.requestC());
-			console.log(hotelName);
 			this.hotel1 = hotelName;
 			this.hotel2 = hotelName;
 			this.updateCurrentHotel(1);

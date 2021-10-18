@@ -1,6 +1,6 @@
 <?php
 	$dbhost = 'localhost';
-	$dbname = 'db_camagru';
+	$dbname = 'db_oop_booking_app';
 	$dbusername = 'root';
 	$dbpassword = '123456';
 ?>

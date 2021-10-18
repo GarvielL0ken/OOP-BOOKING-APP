@@ -24,9 +24,9 @@ export class XHRHandler {
 		var i;
 
 		i = 0;
-		while(this.arrRequestData[i]) {
-			if (this.arrRequestData[i].name === requestName)
-				return(this.arrRequestData[i]);
+		while(this.arrRequestData_[i]) {
+			if (this.arrRequestData_[i].name === requestName)
+				return(this.arrRequestData_[i]);
 			i++;
 		}
 

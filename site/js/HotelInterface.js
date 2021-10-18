@@ -4,11 +4,28 @@ export class HotelInterface {
 		this.hotel = null;
 	}
 
+	setNumberOfDays(numberOfDays) {
+		this.numberOfDays = numberOfDays;
+	}
+
+	getNumberOfDays() {
+		return (this.numberOfDays);
+	}
+
 	getDailyRate() {
 		if (this.hotel)
 			return(this.hotel.dailyRate);
 		else
 			return(0);
+	}
+
+	getDailyRateAsString() {
+		var dailyRate;
+
+		dailyRate = this.getDailyRate();
+		console.log(dailyRate);
+		dailyRate = dailyRate.toFixed(2);
+		return (dailyRate);
 	}
 
 	getFeatures() {
@@ -19,10 +36,15 @@ export class HotelInterface {
 	}
 
 	getTotal() {
-		if (this.hotel)
-			return (this.numberOfDays * this.hotel.dailyRate);
+		var total;
+
+		if (this.hotel) {
+			total = this.numberOfDays * this.hotel.dailyRate;
+			total = total.toFixed(2);
+			return (total);
+		}
 		else
-			return (0);
+			return ("0.00");
 	}
 
 	setHotel(hotelTitle, hotels) {
@@ -32,10 +54,10 @@ export class HotelInterface {
 		while (hotels[i]) {
 			if (hotels[i].title === hotelTitle) {
 				this.hotel = hotels[i];
-				break ;
+				return (true);
 			}
 			i++;
 		}
-		console.log(this.hotel.title);
+		return (false);
 	}
 }

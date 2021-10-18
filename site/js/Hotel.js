@@ -1,4 +1,4 @@
-class Hotel {
+export class Hotel {
 	constructor(title, dailyRate) {
 		this.title = title;
 		this.dailyRate = dailyRate;

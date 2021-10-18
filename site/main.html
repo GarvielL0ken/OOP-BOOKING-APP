@@ -51,17 +51,15 @@
 				<label for="hotel">Hotel:</label>
 				<select id="hotel" name="hotel" v-model="hotel" @change="updateRates()" required>
 					<option value=""></option>
-					<option value="Alpha">Alpha</option>
-					<option value="Bravo">Bravo</option>
-					<option value="Charlie">Charlie</option>
+					<option v-for="hotel in hotels">{{hotel.title}}</option>
 				</select>
-				<pre>Number of days: {{numberOfDays}}</pre>
-				<pre>Daily rate: R{{dailyRate}}</pre>
-				<pre>Total: R{{total}}</pre>
+				<pre>Number of days: {{interface.getNumberOfDays()}}</pre>
+				<pre>Daily rate: R{{interface.getDailyRateAsString()}}</pre>
+				<pre>Total: R{{interface.getTotal()}}</pre>
 				<button>Compare</button>
 			</form>
 		</div>
 		<script src="https://unpkg.com/vue"></script>
-		<script src="./js/main.js"></script>
+		<script src="./js/main.js" type="module"></script>
 	</body>
 </html>
