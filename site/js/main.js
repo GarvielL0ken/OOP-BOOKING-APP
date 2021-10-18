@@ -21,7 +21,17 @@ var application = new Vue({
 				dailyRate : 50}
 			],
 		interface : new HotelInterface(1),
-		xhrHandler : new XHRHandler()
+		xhrHandler : new XHRHandler(),
+		divStyleObject: {
+			backgroundColor: 'grey',
+			border: '3px solid red',
+			borderRadius: '20px',
+			margin: '10px auto 10px auto',
+			minWidth: '0px',
+			padding: '5px 10px 5px 10px',
+			textAlign: 'center',
+			width: '350px'
+		}
 	},
 	methods : {
 		addNewXHRRequestData(name, method, path) {
