@@ -21,47 +21,28 @@ var application = new Vue({
 				dailyRate : 50}
 			],
 		interface : new HotelInterface(1),
-		xhrHandler : new XHRHandler(),
-		divStyleObject: {
-			backgroundColor: 'grey',
-			border: '3px solid red',
-			borderRadius: '20px',
-			margin: '10px auto 10px auto',
-			minWidth: '0px',
-			padding: '5px 10px 5px 10px',
-			textAlign: 'center',
-			width: '350px'
-		}
+		xhrHandler : new XHRHandler([['test', '../config/test.php'], ['get_all_hotels', '../config/get_all_hotels.php']])
 	},
 	methods : {
-		addNewXHRRequestData(name, method, path) {
-			var xhrRequestData;
-
-			xhrRequestData = new XHRRequestData(name, method, path);
-			this.xhrHandler.addNewXHRRequestData(xhrRequestData);
+		addNewXHRRequestData(name, path) {
+			this.xhrHandler.addNewXHRRequestData(name, path);
 		},
-		getAllHotels() {
-			var	response;
-
-			response = JSON.parse(this.sendRequest("get_all_hotels"));
-			response.forEach(function(item) {
-				application.hotels.push(new Hotel(item.title, item.daily_rate));
+		setAllHotels(arrHotels) {
+			console.log("arrHotels: " + typeof(arrHotels));
+			arrHotels = JSON.parse(arrHotels);
+			arrHotels.forEach(function(hotel) {
+				application.hotels.push(new Hotel(hotel.title, hotel.daily_rate));
 			})
 		},
-		sendRequest(requestName= "") {
-			var response;
-
-			response = "";
-			if (requestName)
-				response = this.xhrHandler.requestN(requestName);
-			else
-				response = this.xhrHandler.requestC();
-			return (response);
+		getAllHotels() {
+			this.sendRequest('get_all_hotels', this.setAllHotels);
 		},
-		/*
-			Changes either the checkOutDate or numberOfDays depending on
-			which field the user changed.
-		*/
+		sendRequest(requestName= "", callback) {
+			if (requestName)
+				this.xhrHandler.fetchN(requestName).then((response) => callback(response));
+			else
+				this.xhrHandler.fetchC().then((response) => callback(response));
+		},
 		updateDates(state) {
 			this.interface.setNumberOfDays(this.numberOfDays);
 			if (state === 0)
@@ -120,5 +101,4 @@ var application = new Vue({
 	}
 })
 
-application.addNewXHRRequestData("get_all_hotels", "GET", '../config/get_all_hotels.php');
-application.getAllHotels();
+application.sendRequest('get_all_hotels', application.setAllHotels);

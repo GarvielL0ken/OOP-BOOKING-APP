@@ -1,16 +1,25 @@
+import { XHRRequestData } from './XHRRequestData.js';
 export class XHRHandler {
 	constructor(requestData= null) {
 		/** @private {!currentRequest} */
-		this.currentRequest_ = requestData;
+		this.currentRequest_ = null;
 
 		/** @private {!responseText}*/
 		this.responseText_ = null;
 
 		/** @private {!arrRequestData} */
-		if (requestData)
-			this.arrRequestData_ = [requestData];
-		else
-			this.arrRequestData_ = [];
+		this.arrRequestData_ = [];
+		this.initializeRequestData(requestData);
+	}
+
+	initializeRequestData(requestData) {
+		var	i;
+
+		i = 0;
+		while(requestData[i]) {
+			this.addNewRequestData(requestData[i][0], requestData[i][1]);
+			i++;
+		}
 	}
 
 	/*	____ACCESSOR METHODS____	*/
@@ -38,54 +47,40 @@ export class XHRHandler {
 		this.responseText_ = responseText;
 	}
 
-	addNewXHRRequestData(xhrRequestData) {
-		this.arrRequestData_.push(xhrRequestData);
+	addNewRequestData(name, path) {
+		var newRequestData = new XHRRequestData(name, path);
+
+		this.arrRequestData_.push(newRequestData);
 		if (!this.currentRequest_)
-			this.currentRequest_ = xhrRequestData;
+			this.currentRequest_ = newRequestData;
 	}
 
 	/*	____STANDARD METHODS____		*/
 	/*		____XHR REQUEST METHODS___	*/
 	//Send XMLHTTPRequset (xhr) using the data provided in the requestData object
-	//Returns the respose text
-	request(requestData) {
-		const	xhr = new XMLHttpRequest();
+	//Returns the response text
+	async fetch(requestData) {
+		var	response	=null;
+		var	data		=null;
 		
-		var		xhrHandler = this;
+		console.log(requestData);
+		response = await fetch(requestData.path);
+		data = await response.text();
 		
-		xhr.open(requestData.method, requestData.path, false);
-		
-		xhr.onreadystatechange = function () {
-			let done = 4;
-			let ok = 200;
-			if (xhr.readyState === done) {
-				if (xhr.status === ok) {
-					xhrHandler.setResponseText(this.responseText);
-				} else {
-					console.log('Error: ' + xhr.status);
-				}
-			}
-		};
-		xhr.send();
-		return (this.responseText_);
+		return (data);
 	}
 
-	//Send xhr request using the data stored in the currentRequest object
-	//Returns the respose text
-	requestC() {
-		return(this.request(this.currentRequest_));
+	async fetchC() {
+		return(this.fetch(this.currentRequest_));
 	}
 
-	//Send xhr request using the data stored in a request whose name matches the given requestName
-	//Set currentRequest to the specified requestData object if setToCurrent is true
-	//Returns the respose text
-	requestN(requestName, setToCurrent=false) {
+	async fetchN(requestName, setToCurrent=false) {
 		var tempRequest;
 
 		tempRequest = this.getRequestN(requestName);
 		if (setToCurrent)
 			this.currentRequest_ = tempRequest;
 
-		return(this.request(tempRequest));
+		return(this.fetch(tempRequest));
 	}
 }
