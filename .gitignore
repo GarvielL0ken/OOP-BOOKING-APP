@@ -1,2 +1,4 @@
 *.tkn
 test*
+composer*
+vendor*
