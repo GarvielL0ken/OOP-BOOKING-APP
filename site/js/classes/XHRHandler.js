@@ -17,7 +17,7 @@ export class XHRHandler {
 
 		i = 0;
 		while(requestData[i]) {
-			this.addNewRequestData(requestData[i][0], requestData[i][1]);
+			this.addNewRequestData(requestData[i][0], requestData[i][1], requestData[i][2]);
 			i++;
 		}
 	}
@@ -47,8 +47,8 @@ export class XHRHandler {
 		this.responseText_ = responseText;
 	}
 
-	addNewRequestData(name, path) {
-		var newRequestData = new XHRRequestData(name, path);
+	addNewRequestData(name, path, callback) {
+		var newRequestData = new XHRRequestData(name, path, callback);
 
 		this.arrRequestData_.push(newRequestData);
 		if (!this.currentRequest_)
@@ -63,7 +63,6 @@ export class XHRHandler {
 		var	response	=null;
 		var	data		=null;
 		
-		console.log(requestData);
 		response = await fetch(requestData.path);
 		data = await response.text();
 		

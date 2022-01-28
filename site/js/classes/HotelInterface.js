@@ -19,15 +19,6 @@ export class HotelInterface {
 			return(0);
 	}
 
-	getDailyRateAsString() {
-		var dailyRate;
-
-		dailyRate = this.getDailyRate();
-		console.log(dailyRate);
-		dailyRate = dailyRate.toFixed(2);
-		return (dailyRate);
-	}
-
 	getFeatures() {
 		if (this.hotel)
 			return(this.hotel.features);
@@ -40,11 +31,10 @@ export class HotelInterface {
 
 		if (this.hotel) {
 			total = this.numberOfDays * this.hotel.dailyRate;
-			total = total.toFixed(2);
 			return (total);
 		}
 		else
-			return ("0.00");
+			return (0);
 	}
 
 	setHotel(hotelTitle, hotels) {

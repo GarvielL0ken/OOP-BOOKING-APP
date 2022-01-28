@@ -1,7 +1,7 @@
-import { Hotel } from './Hotel.js';
-import { HotelInterface } from './HotelInterface.js';
-import { XHRHandler } from './XHRHandler.js';
-import { XHRRequestData } from './XHRRequestData.js';
+import { DateInterface } from './classes/DateInterface.js';
+import { Hotel } from './classes/Hotel.js';
+import { HotelInterface } from './classes/HotelInterface.js';
+import { XHRHandler } from './classes/XHRHandler.js';
 
 var application = new Vue({
 	el : "#application",
@@ -13,25 +13,31 @@ var application = new Vue({
 		dailyRate : 0,
 		total : 0,
 		hotels : [
+			{title : "",
+				dailyRate : 0},
 			{title : "Alpha",
 				dailyRate : 100},
 			{title : "Bravo",
 				dailyRate : 200},
 			{title : "Charlie",
-				dailyRate : 50}
+				dailyRate : 50},
+			
 			],
 		interface : new HotelInterface(1),
-		xhrHandler : new XHRHandler([['test', '../config/test.php'], ['get_all_hotels', '../config/get_all_hotels.php']])
+		dateInterface : new DateInterface(1),
+		xhrHandler : new XHRHandler([['get_all_hotels', '../config/get_all_hotels.php']])
 	},
 	methods : {
+		updateCurrentHotel() {
+			this.interface.setHotel(this.hotel, this.hotels);
+		},
 		addNewXHRRequestData(name, path) {
 			this.xhrHandler.addNewXHRRequestData(name, path);
 		},
 		setAllHotels(arrHotels) {
-			console.log("arrHotels: " + typeof(arrHotels));
 			arrHotels = JSON.parse(arrHotels);
 			arrHotels.forEach(function(hotel) {
-				application.hotels.push(new Hotel(hotel.title, hotel.daily_rate));
+				application.hotels.push(new Hotel(hotel.title, parseFloat(hotel.daily_rate)));
 			})
 		},
 		getAllHotels() {
@@ -44,59 +50,15 @@ var application = new Vue({
 				this.xhrHandler.fetchC().then((response) => callback(response));
 		},
 		updateDates(state) {
-			this.interface.setNumberOfDays(this.numberOfDays);
-			if (state === 0)
-				this.updateCheckOutDate();
-			if (state === 1)
-				this.updateNumberOfDays();
-			this.updateRates();
+			this.dateInterface.updateDates(this, [this.interface], state);
 		},
-		updateCheckOutDate() {
-			var objCheckInDate;
-			var objCheckOutDate;
-
-			if (this.numberOfDays > 0 && this.checkInDate) {
-				objCheckInDate = new Date(this.checkInDate);
-				objCheckOutDate = new Date();
-
-				objCheckOutDate.setDate(objCheckInDate.getDate() + parseInt(this.numberOfDays)); 
-				this.checkOutDate = objCheckOutDate.toJSON();
-				this.checkOutDate = this.checkOutDate.substring(0, 10);
-			}
+	},
+	computed: {
+		CDailyRate() {
+			return(this.interface.getDailyRate().toFixed(2));
 		},
-		updateNumberOfDays() {
-			const millisecondsInADay = 86400000;
-			var objCheckInDate;
-			var objCheckOutDate;
-			var intTotalNumberOfDays;
-			var milliseconds;
-			
-			if (this.checkInDate && this.checkOutDate) {
-				objCheckInDate = new Date(this.checkInDate);
-				objCheckOutDate = new Date(this.checkOutDate);
-
-				milliseconds = objCheckOutDate.valueOf() - objCheckInDate.valueOf();
-				intTotalNumberOfDays = milliseconds / millisecondsInADay;
-				if (intTotalNumberOfDays > 0)
-					this.numberOfDays = milliseconds / millisecondsInADay;
-				else {
-					this.numberOfDays = 1;
-					this.updateCheckOutDate();
-				}
-				this.interface.setNumberOfDays(this.numberOfDays);
-			}
-		},
-		updateRates() {
-			var	currentHotel;
-			var	i;
-
-			if (this.interface.setHotel(this.hotel, this.hotels) && (0 < this.numberOfDays)) {
-				this.dailyRate = this.interface.getDailyRate();
-				this.total = this.interface.getTotal();
-			} else {
-				this.dailyRate = 0;
-				this.total = 0;
-			}
+		CTotal() {
+			return(this.interface.getTotal().toFixed(2));
 		}
 	}
 })

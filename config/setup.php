@@ -17,6 +17,7 @@
 			$sql = "CREATE TABLE IF NOT EXISTS `hotels` (
 				`id_hotel`		INT(4)		AUTO_INCREMENT	PRIMARY KEY,
 				`title`			VARCHAR(60)	NOT NULL,
+				`features`		VARCHAR(60)	NOT NULL,
 				`daily_rate`	FLOAT(8, 2)	NOT NULL
 				);";
 			$conn->exec($sql);

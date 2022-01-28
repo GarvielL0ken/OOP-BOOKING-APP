@@ -3,38 +3,74 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Compare</title>
+		<link rel="stylesheet" type="text/css" href="./css/common.css">
+		<link rel="stylesheet" type="text/css" href="./css/compare.css">
 	</head>
 	<body>
-		<a href="./main.html">Main</a>
-		<div id="application">
-			<form>
-				<label for="hotel">Hotel:</label>
-				<select id="hotel" name="hotel" v-model="hotel1" @change="updateCurrentHotel(1)" required>
-						<option value=""></option>
-						<option value="Alpha">Alpha</option>
-						<option value="Bravo">Bravo</option>
-						<option value="Charlie">Charlie</option>
-				</select>
-				<pre>Number of days: {{numberOfDays}}</pre>
-				<pre>Daily rate: R{{interface1.getDailyRate()}}</pre>
-				<pre>Total: R{{interface1.getTotal()}}</pre>
-				<pre>Features: {{interface1.getFeatures()}}</pre>
-				<button type="button">Book</button>
-			</form>
-			<form>
-				<label for="hotel">Hotel:</label>
-				<select id="hotel" name="hotel" v-model="hotel2" @change="updateCurrentHotel(2)" required>
-						<option value=""></option>
-						<option value="Alpha">Alpha</option>
-						<option value="Bravo">Bravo</option>
-						<option value="Charlie">Charlie</option>
-				</select>
-				<pre>Number of days: {{numberOfDays}}</pre>
-				<pre>Daily rate: R{{interface2.getDailyRate()}}</pre>
-				<pre>Total: R{{interface2.getTotal()}}</pre>
-				<pre>Features: {{interface2.getFeatures()}}</pre>
-				<button type="button">Book</button>
-			</form>
+		<div id="application">		
+				<div class="card" id="div-stay-duration">
+					<form>
+						<h3>Alter your check in Date</h3>
+						<label for="number">Number of Days:</label>
+						<input id="number"
+								type="number"
+								name="number"
+								min="1"
+								v-model="numberOfDays"
+								@change="updateDates(0)"
+								@keyup="updateDates(0)"
+								required>
+						<br>
+						
+						<label for="check-in-date">Check in Date:</label>
+						<input id="check-in-date"
+								type="date"
+								name="check_in_date"
+								v-model="checkInDate"
+								@keyup="updateDates(0)"
+								@change="updateDates(0)"
+								required>
+						<br>
+						
+						<label for="check-out-date">Check out Date:</label>
+						<input id="check-out-date"
+								type="date"
+								name="check_out_date"
+								v-model="checkOutDate"
+								@keyup="updateDates(1)"
+								@change="updateDates(1)"
+								required>
+						<br>
+					</form>
+				</div>
+				<div class="card" id="div-hotel-left">
+					<form id="frm-hotel-left" action="../config/book_hotel.php" method="GET">
+						<label for="hotel">Hotel:</label>
+						<select id="hotel" name="hotel" v-model="hotel1" @change="updateCurrentHotel(1)" required>
+								<option value=""></option>
+								<option v-for="hotel in hotels">{{hotel.title}}</option>
+						</select>
+						<pre>Number of days: {{numberOfDays}}</pre>
+						<pre>Daily rate: R{{CDailyRate(interface1)}}</pre>
+							<pre>Total: R{{CTotal(interface1)}}</pre>
+							<pre>Features: {{CFeatures(interface1)}}</pre>
+						<button type="submit">Book</button>
+					</form>
+				</div>
+				<div class="card" id="div-hotel-right">
+					<form id="frm-hotel-right" action="../config/book_hotel.php" method="GET">
+							<label for="hotel">Hotel:</label>
+							<select id="hotel" name="hotel" v-model="hotel2" @change="updateCurrentHotel(2)" required>
+									<option value=""></option>
+									<option v-for="hotel in hotels">{{hotel.title}}</option>
+							</select>
+							<pre>Number of days: {{numberOfDays}}</pre>
+							<pre>Daily rate: R{{CDailyRate(interface2)}}</pre>
+							<pre>Total: R{{CTotal(interface2)}}</pre>
+							<pre>Features: {{CFeatures(interface2)}}</pre>
+							<button type="submit">Book</button>
+					</form>
+				</div>
 		</div>
 		<script src="https://unpkg.com/vue"></script>
 		<script src="./js/compare.js" type="module"></script>

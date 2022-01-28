@@ -1,13 +1,17 @@
-import { HotelInterface } from './HotelInterface.js';
-import { XHRHandler } from './XHRHandler.js';
-import { XHRRequestData } from './XHRRequestData.js';
+import { DateInterface } from './classes/DateInterface.js';
+import { Hotel } from './classes/Hotel.js';
+import { HotelInterface } from './classes/HotelInterface.js';
+import { XHRHandler } from './classes/XHRHandler.js';
+
 
 var application = new Vue({
 	el : "#application",
 	data : {
+		checkInDate : "",
+		checkOutDate : "",
+		numberOfDays : 1,
 		hotel1 : "",
 		hotel2 : "",
-		numberOfDays : 2,
 		xhrResponseText : "Initial Text",
 		hotels : [
 			{title : "Alpha",
@@ -21,7 +25,11 @@ var application = new Vue({
 				features : "dolar"}],
 		interface1 : new HotelInterface(2),
 		interface2 : new HotelInterface(2),
-		xhrHandler : new XHRHandler()
+		dateInterface : new DateInterface(),
+		xhrHandler : new XHRHandler([['get_all_hotels', '../config/get_all_hotels.php'],
+										['get_hotel', '../config/get_hotel.php'],
+										['get_user_data', '../config/get_user_data.php'],
+										['book_hotel', '../config/book_hotel.php']])
 	},
 	methods : {
 		updateCurrentHotel(interfaceIndex) {
@@ -30,23 +38,77 @@ var application = new Vue({
 			else
 				this.interface2.setHotel(this.hotel2, this.hotels);
 		},
-		addXHRRequestData(name, method, path) {
-			var xhrRequestData;
-
-			xhrRequestData = new XHRRequestData(name, method, path);
-			this.xhrHandler.addNewXHRRequestData(xhrRequestData);
+		addNewXHRRequestData(name, path) {
+			this.xhrHandler.addNewXHRRequestData(name, path);
 		},
-		getHotelFromSession() {
-			var	hotelName;
+		sendEmail(interfaceIndex) {
+			var	selectedHotel;
 
-			hotelName = JSON.parse(this.xhrHandler.requestC());
-			this.hotel1 = hotelName;
-			this.hotel2 = hotelName;
+			if (interfaceIndex === 1)
+				selectedHotel = this.interface1.hotel;
+			else
+				selectedHotel = this.interface2.hotel;
+		},
+		sendRequest(requestName= "", callback, query_parameters="") {
+			if (query_parameters)
+				this.xhrHandler.fetchQP(requestName, query_parameters).then((response) => callback);
+			else if (requestName)
+				this.xhrHandler.fetchN(requestName).then((response) => callback(response));
+			else
+				this.xhrHandler.fetchC().then((response) => callback(response));
+		},
+		setAllHotels(arrHotels) {
+			arrHotels = JSON.parse(arrHotels);
+			arrHotels.forEach(function(hotel) {
+				application.hotels.push(new Hotel(hotel.title, parseFloat(hotel.daily_rate), hotel.features));
+			})
+			this.getUserDataFromSession();
+		},
+		getAllHotels() {
+			this.sendRequest('get_all_hotels', this.setAllHotels);
+		},
+		setUserDataFromSession(userData) {
+			console.log(userData);
+			userData = JSON.parse(userData);
+			console.log(userData);
+			console.log(userData.hotel);
+
+			this.checkInDate = userData.checkInDate;
+			this.checkOutDate = userData.checkOutDate;
+			this.numberOfDays = userData.numberOfDays;
+			this.interface1.numberOfDays = userData.numberOfDays;
+			this.interface2.numberOfDays = userData.numberOfDays;
+			this.hotel1 = userData.hotel;
+			this.hotel2 = userData.hotel;
+			
 			this.updateCurrentHotel(1);
 			this.updateCurrentHotel(2);
+		},
+		getUserDataFromSession() {
+			this.sendRequest('get_user_data', this.setUserDataFromSession);
+		},
+		updateDates(state) {
+			var query_parameters;
+
+			this.dateInterface.updateDates(this, [this.interface1, this.interface2], state);
+		
+			this.sendRequest('update_session_dates', none);
+		},
+		CDailyRate(objInterface) {
+			return(objInterface.getDailyRate().toFixed(2));
+		},
+		CTotal(objInterface) {
+			return(objInterface.getTotal().toFixed(2));
+		},
+		CFeatures(objInterface) {
+			return(objInterface.getFeatures());
 		}
 	}
 })
 
-application.addXHRRequestData('get_hotel', 'GET', '../config/get_hotel.php');
-application.getHotelFromSession();
+/*Flow:
+		GetAllHotels() {
+			getHotelFromSession()
+		}
+*/
+application.getAllHotels();

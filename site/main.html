@@ -9,7 +9,7 @@
 	<body>
 		<div id="application">
 			<form action="../config/submit_user_data.php" method="post">
-				<div id="div-contact-information" v-bind:style="divStyleObject">
+				<div id="div-contact-information" class="card">
 					<h3>Enter Your Contact Information</h3>
 					<label for="first-name">First Name:</label>
 					<input type="text" id="first-name" name="first_name" required><br>
@@ -21,12 +21,12 @@
 					<input type="email" id="email" name="email" required><br>
 				</div>
 				
-				<div id="div-stay-duration" v-bind:style="divStyleObject">
+				<div id="div-stay-duration" class="card">
 					<h3>Select Your Check In and Check Out Dates</h3>
 					<label for="number">Number of Days:</label>
 					<input id="number"
 							type="number"
-							name="number"
+							name="number_of_days"
 							min="1"
 							v-model="numberOfDays"
 							@change="updateDates(0)"
@@ -55,20 +55,19 @@
 					<br>
 				</div>
 
-				<div id="div-hotel-selection" v-bind:style="divStyleObject">
+				<div id="div-hotel-selection" class="card">
 					<h3>Select a Hotel</h3>
 					<h5>You can change this later</h5>
 					<label for="hotel">Hotel:</label>
-					<select id="hotel" name="hotel" v-model="hotel" @change="updateRates()" required>
-						<option value=""></option>
+					<select id="hotel" name="hotel" v-model="hotel" @change="updateCurrentHotel()" required>
 						<option v-for="hotel in hotels">{{hotel.title}}</option>
 					</select>
 				</div>
 
-				<div id="div-rate-display" v-bind:style="divStyleObject">
-					<pre>Number of days: {{interface.getNumberOfDays()}}</pre>
-					<pre>Daily rate: R{{interface.getDailyRateAsString()}}</pre>
-					<pre>Total: R{{interface.getTotal()}}</pre>
+				<div id="div-rate-display" class="card">
+					<pre>Number of days: {{numberOfDays}}</pre>
+					<pre>Daily rate: R{{CDailyRate}}</pre>
+					<pre>Total: R{{CTotal}}</pre>
 					<button>Compare</button>
 				</div>
 			</form>

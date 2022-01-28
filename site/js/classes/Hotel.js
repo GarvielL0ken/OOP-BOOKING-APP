@@ -1,11 +1,7 @@
 export class Hotel {
-	constructor(title, dailyRate) {
+	constructor(title, dailyRate, features="") {
 		this.title = title;
 		this.dailyRate = dailyRate;
-		this.features = "";
-	}
-
-	setFeatures(features) {
 		this.features = features;
 	}
 }
